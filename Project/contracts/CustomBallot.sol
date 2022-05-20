@@ -60,7 +60,7 @@ contract CustomBallot {
         winnerName_ = proposals[winningProposal()].name;
     }
 
-    function votingPower() public view returns (uint256 votingPower) {
-        //TODO: do this
-    }
+    // function votingPower() public view returns (uint256 votingPower) {
+    //     //TODO: do this
+    // }
 }
