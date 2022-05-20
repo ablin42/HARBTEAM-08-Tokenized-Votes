@@ -1,0 +1,16 @@
+[1653063523630] Using address: "0xbf7Bc8Db422d291FefA37cc23B34749bA7a6101E"
+[1653063535663] Wallet balance: 0.020078011745696085
+[1653063535664] Deploying MyToken: ""
+[1653063732047] Using address: "0xA90B1F43Ff13ee9B0A7557d29e5791DF59f9fe98"
+[1653063743515] Wallet balance: 18.749039480321787
+[1653063743517] Deploying MyToken: ""
+[1653063746705] Awaiting confirmations: {}
+[1653063800632] MyToken deployed at: "0x747271060cc9F37a3C3685b0C8203C12d3e84A83"
+[1653063800633] Deploying Ballot contract: {}
+[1653063800634] Proposals: ["Revive Luna","Kill UST","Abandon Ship"]
+[1653063800637] Proposal N.: "1: Revive Luna"
+[1653063800637] Proposal N.: "2: Kill UST"
+[1653063800638] Proposal N.: "3: Abandon Ship"
+[1653063809622] Awaiting confirmations: {}
+[1653063820885] Contract deployed at: "0xb01063091df2Bd6A588142eA9e2A18D7537C2B50"
+
