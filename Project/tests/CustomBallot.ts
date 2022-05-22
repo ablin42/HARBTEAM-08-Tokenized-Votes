@@ -8,7 +8,7 @@ import { CustomBallot, MyToken } from "../typechain";
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
 const BASE_VOTE_POWER = 10;
 const PROPOSAL_CHOSEN = [0, 1, 2];
-const USED_VOTE_POWER = 5;
+const USED_VOTE_POWER = 6;
 const ACCOUNTS_FOR_TESTING = 3;
 
 function convertStringArrayToBytes32(array: string[]) {
@@ -124,7 +124,14 @@ describe("Ballot", function () {
                   .connect(accounts[index + 1])
                   .vote(PROPOSAL_CHOSEN[index], USED_VOTE_POWER);
                 await voteTx.wait();
-                expectedVotes[PROPOSAL_CHOSEN[index]] += USED_VOTE_POWER;
+              });
+              expectedVotes[PROPOSAL_CHOSEN[index]] += USED_VOTE_POWER;
+
+              it("should return the remaining voting power", async () => {
+                const currentVotingPower = await ballotContract.votingPower(
+                  accounts[index + 1].address
+                );
+                expect(currentVotingPower).to.eq(BASE_VOTE_POWER - USED_VOTE_POWER);
               });
 
               it("updates the votes for that proposal", async () => {
@@ -142,6 +149,11 @@ describe("Ballot", function () {
                 );
                 expect(spentVotes).to.eq(USED_VOTE_POWER);
               });
+
+              // it("should return 0 voting power", async () => {
+              //   const votingPower = await ballotContract.votingPower(accounts[index + 1].address);
+              //   expect(votingPower).to.eq(0);
+              // });
             } else {
               it("fails", async () => {
                 await expect(

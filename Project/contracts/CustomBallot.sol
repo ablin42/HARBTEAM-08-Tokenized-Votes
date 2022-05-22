@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 interface IERC20Votes {
-    function getPastVotes(address, uint256) external returns (uint256);
+    function getPastVotes(address, uint256) external view returns (uint256);
 }
 
 contract CustomBallot {
@@ -36,10 +36,7 @@ contract CustomBallot {
     }
 
     function vote(uint256 proposal, uint256 amount) external {
-        uint256 votingPowerAvailable = voteToken.getPastVotes(
-            msg.sender,
-            referenceBlock
-        ) - spentVotePower[msg.sender]; // TODO: Change this
+        uint256 votingPowerAvailable = votingPower(msg.sender);
         require(votingPowerAvailable >= amount, "Has not enough voting power");
         spentVotePower[msg.sender] += amount;
         proposals[proposal].voteCount += amount;
@@ -60,7 +57,10 @@ contract CustomBallot {
         winnerName_ = proposals[winningProposal()].name;
     }
 
-    // function votingPower() public view returns (uint256 votingPower) {
-    //     //TODO: do this
-    // }
+    function votingPower(address _voter) public view returns (uint256 _votingPower) {
+        _votingPower = voteToken.getPastVotes(
+            _voter,
+            referenceBlock
+        ) - spentVotePower[_voter];
+    }
 }

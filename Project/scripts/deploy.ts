@@ -26,8 +26,6 @@ async function main() {
       : new ethers.Wallet(process.env.PRIVATE_KEY ?? EXPOSED_KEY);
   writeLogs("Using address", wallet.address);
 
-  // TODO deploy token first
-
   const provider = ethers.providers.getDefaultProvider("ropsten");
   const signer = wallet.connect(provider);
   const balanceBN = await signer.getBalance();
