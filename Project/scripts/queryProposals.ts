@@ -28,8 +28,6 @@ export async function main(ballotAddress: string) {
   writeLogs("Wallet balance", balance);
   if (balance < 0.01) throw new Error("Not enough ether");
 
-  if (ballotAddress === "0x" && process.argv.length >= 3)
-    ballotAddress = process.argv[2];
   const ballotContract = new ethers.Contract(
     ballotAddress,
     ballotJson.abi,
@@ -51,7 +49,7 @@ export async function main(ballotAddress: string) {
 }
 
 if (process.argv.length >= 3) {
-  main("0x").catch((error) => {
+  main(process.argv[2]).catch((error) => {
     console.error(error);
     process.exitCode = 1;
   });
