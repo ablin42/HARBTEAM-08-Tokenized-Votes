@@ -15,7 +15,7 @@ export async function main(ballotAddress: string) {
   const wallet =
     process.env.MNEMONIC && process.env.MNEMONIC.length > 0
       ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
-      : new ethers.Wallet(process.env.ACCOUNT1 ?? EXPOSED_KEY);
+      : new ethers.Wallet(process.env.PRIVATE_KEY ?? EXPOSED_KEY);
   writeLogs("Using address", wallet.address);
   const provider = ethers.providers.getDefaultProvider("ropsten");
   const signer = wallet.connect(provider);
@@ -83,7 +83,7 @@ export async function secondary(ballotAddress: string) {
   wallet =
     process.env.MNEMONIC && process.env.MNEMONIC.length > 0
       ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
-      : new ethers.Wallet(process.env.ACCOUNT2 ?? EXPOSED_KEY);
+      : new ethers.Wallet(process.env.ACCOUNT3 ?? EXPOSED_KEY);
   writeLogs("Using address", wallet.address);
   signer = wallet.connect(provider);
 

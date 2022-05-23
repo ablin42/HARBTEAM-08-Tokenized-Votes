@@ -47,11 +47,11 @@ export async function main(tokenAddress: string) {
     ethers.utils.parseEther((100).toFixed(18))
   );
   await mintTx.wait();
-  writeLogs(`MINTING ${100} to ${wallet.address}`, {hash: mintTx.hash}); 
+  writeLogs(`MINTING ${100} to ${wallet.address}`, { hash: mintTx.hash });
 
   let delegateTx = await tokenContract.delegate(wallet.address);
   await delegateTx.wait();
-  writeLogs(`DELEGATING to ${wallet.address}`, {hash: delegateTx.hash}); 
+  writeLogs(`DELEGATING to ${wallet.address}`, { hash: delegateTx.hash });
 
   let postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -69,7 +69,9 @@ export async function main(tokenAddress: string) {
     ethers.utils.parseEther(BASE_VOTE_POWER.toFixed(18))
   );
   await mintTx.wait();
-  writeLogs(`MINTING ${BASE_VOTE_POWER} to ${wallet.address}`,{hash: mintTx.hash});
+  writeLogs(`MINTING ${BASE_VOTE_POWER} to ${wallet.address}`, {
+    hash: mintTx.hash,
+  });
 
   postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -79,7 +81,7 @@ export async function main(tokenAddress: string) {
 
   delegateTx = await tokenContract.delegate(wallet.address);
   await delegateTx.wait();
-  writeLogs(`DELEGATING to ${wallet.address}`, {hash: delegateTx.hash});
+  writeLogs(`DELEGATING to ${wallet.address}`, { hash: delegateTx.hash });
 
   postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -92,7 +94,7 @@ export async function main(tokenAddress: string) {
     ethers.utils.parseEther((3).toFixed(18))
   );
   await sendTx.wait();
-  writeLogs(`SENDING ${3} to ${wallet.address}`, {hash: sendTx.hash});
+  writeLogs(`SENDING ${3} to ${wallet.address}`, { hash: sendTx.hash });
 
   postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -102,7 +104,7 @@ export async function main(tokenAddress: string) {
 
   delegateTx = await tokenContract.delegate(wallet.address);
   await delegateTx.wait();
-  writeLogs(`DELEGATING to ${wallet.address}`, {hash: delegateTx.hash});
+  writeLogs(`DELEGATING to ${wallet.address}`, { hash: delegateTx.hash });
 
   postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -139,9 +141,16 @@ export async function secondary(tokenAddress: string) {
   );
   writeLogs("Attached token contract interface to address", tokenAddress);
 
+  let mintTx = await tokenContract.mint(
+    wallet.address,
+    ethers.utils.parseEther((50).toFixed(18))
+  );
+  await mintTx.wait();
+  writeLogs(`MINTING ${50} to ${ADDRESSES[1]}`, { hash: mintTx.hash });
+
   let delegateTx = await tokenContract.delegate(wallet.address);
   await delegateTx.wait();
-  writeLogs(`DELEGATING to ${wallet.address}`, {hash: delegateTx.hash}); 
+  writeLogs(`DELEGATING to ${wallet.address}`, { hash: delegateTx.hash });
 
   let postDelegateVotePower = await tokenContract.getVotes(wallet.address);
   writeLogs(
@@ -149,12 +158,14 @@ export async function secondary(tokenAddress: string) {
     quickFormat(postDelegateVotePower)
   );
 
-  let mintTx = await tokenContract.mint(
+  mintTx = await tokenContract.mint(
     ADDRESSES[1],
     ethers.utils.parseEther(BASE_VOTE_POWER.toFixed(18))
   );
   await mintTx.wait();
-  writeLogs(`MINTING ${BASE_VOTE_POWER} to ${ADDRESSES[1]}`, {hash: mintTx.hash});
+  writeLogs(`MINTING ${BASE_VOTE_POWER} to ${ADDRESSES[1]}`, {
+    hash: mintTx.hash,
+  });
   postDelegateVotePower = await tokenContract.getVotes(ADDRESSES[1]);
   writeLogs(
     `VOTING POWER FOR ${ADDRESSES[1]}`,
@@ -170,7 +181,7 @@ export async function secondary(tokenAddress: string) {
 
   delegateTx = await tokenContract.delegate(ADDRESSES[2]);
   await delegateTx.wait();
-  writeLogs(`DELEGATING to ${ADDRESSES[2]}`, {hash: delegateTx.hash}); 
+  writeLogs(`DELEGATING to ${ADDRESSES[2]}`, { hash: delegateTx.hash });
   writeLogs(
     `VOTING POWER FOR ${ADDRESSES[1]}`,
     quickFormat(postDelegateVotePower)

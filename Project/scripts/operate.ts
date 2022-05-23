@@ -22,20 +22,22 @@ async function main() {
 
   writeLogs("Creating 1st ballot", {});
   let ballotAddress = await deployBallot(tokenAddress); //"0x98f96De15d7493a1aa9c1620a17B96A621cDD845"
-  await sleep(1000 * 20);
+  await sleep(1000 * 30);
   writeLogs("Using ballot at address", { address: ballotAddress });
   await queryProposals(ballotAddress);
   await ballotFactory1(ballotAddress);
+  await queryProposals(ballotAddress);
 
   writeLogs("Calling 2nd part of token operations", {});
   await tokenOperations2(tokenAddress);
   
   writeLogs("Creating 2nd ballot", {});
   ballotAddress = await deployBallot(tokenAddress);
-  await sleep(1000 * 20);
+  await sleep(1000 * 30);
   writeLogs("Using ballot at address", { address: ballotAddress });
   await queryProposals(ballotAddress);
   await ballotFactory2(ballotAddress);
+  await queryProposals(ballotAddress);
 
   writeLogs("", "");
 }
