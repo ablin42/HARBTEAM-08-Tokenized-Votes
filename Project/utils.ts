@@ -10,11 +10,15 @@ export async function writeLogs(logname: string, data: any) {
     "[" +
     JSON.stringify(new Date().toLocaleTimeString()) +
     "]" +
-    ` ${logname}` +
+    ` ${logname}: ` +
     JSON.stringify(data) +
     "\n";
 
   fs.appendFileSync("./logs/logs.txt", toWrite);
   console.log(logname, data);
   return;
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
