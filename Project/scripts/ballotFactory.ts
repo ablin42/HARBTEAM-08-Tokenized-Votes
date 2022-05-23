@@ -86,6 +86,11 @@ export async function secondary(ballotAddress: string) {
       : new ethers.Wallet(process.env.ACCOUNT3 ?? EXPOSED_KEY);
   writeLogs("Using address", wallet.address);
   signer = wallet.connect(provider);
+  ballotContract = new ethers.Contract(
+    ballotAddress,
+    ballotJson.abi,
+    signer
+  );
 
   const winningProposal = await ballotContract.winnerName();
   writeLogs(`WINNING PROPOSAL`, winningProposal);

@@ -134,11 +134,7 @@ export async function secondary(tokenAddress: string) {
   writeLogs("Wallet balance", balance);
   if (balance < 0.01) throw new Error("Not enough ether");
 
-  const tokenContract = new ethers.Contract(
-    tokenAddress,
-    tokenJson.abi,
-    signer
-  );
+  let tokenContract = new ethers.Contract(tokenAddress, tokenJson.abi, signer);
   writeLogs("Attached token contract interface to address", tokenAddress);
 
   let mintTx = await tokenContract.mint(
@@ -178,6 +174,7 @@ export async function secondary(tokenAddress: string) {
       : new ethers.Wallet(process.env.ACCOUNT1 ?? EXPOSED_KEY);
   writeLogs("Using address", wallet.address);
   signer = wallet.connect(provider);
+  tokenContract = new ethers.Contract(tokenAddress, tokenJson.abi, signer);
 
   delegateTx = await tokenContract.delegate(ADDRESSES[2]);
   await delegateTx.wait();
@@ -186,8 +183,20 @@ export async function secondary(tokenAddress: string) {
     `VOTING POWER FOR ${ADDRESSES[1]}`,
     quickFormat(postDelegateVotePower)
   );
+  wallet =
+    process.env.MNEMONIC && process.env.MNEMONIC.length > 0
+      ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
+      : new ethers.Wallet(process.env.ACCOUNT3 ?? EXPOSED_KEY);
+  writeLogs("Using address", wallet.address);
+  signer = wallet.connect(provider);
+  tokenContract = new ethers.Contract(tokenAddress, tokenJson.abi, signer);
+
+  delegateTx = await tokenContract.delegate(wallet.address);
+  await delegateTx.wait();
+  writeLogs(`DELEGATING to ${wallet.address}`, { hash: delegateTx.hash });
+
   writeLogs(
-    `VOTING POWER FOR ${ADDRESSES[2]}`,
+    `VOTING POWER FOR ${wallet.address}`,
     quickFormat(postDelegateVotePower)
   );
 
