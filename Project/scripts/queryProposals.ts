@@ -23,10 +23,6 @@ export async function main(ballotAddress: string) {
 
   const provider = ethers.providers.getDefaultProvider("ropsten");
   const signer = wallet.connect(provider);
-  const balanceBN = await signer.getBalance();
-  const balance = Number(ethers.utils.formatEther(balanceBN));
-  writeLogs("Wallet balance", balance);
-  if (balance < 0.01) throw new Error("Not enough ether");
 
   const ballotContract = new ethers.Contract(
     ballotAddress,

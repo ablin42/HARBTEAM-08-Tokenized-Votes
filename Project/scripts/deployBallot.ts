@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import "dotenv/config";
 import * as ballotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
-import * as tokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
 import { writeLogs } from "../utils";
 
 // This key is already public on Herong's Tutorial Examples - v1.03, by Dr. Herong Yang
@@ -19,7 +18,8 @@ function convertStringArrayToBytes32(array: string[]) {
   return bytes32Array;
 }
 
-async function main() {
+export async function main(tokenAddress: string) {
+  writeLogs("Running deployBallot script", "");
   const wallet =
     process.env.MNEMONIC && process.env.MNEMONIC.length > 0
       ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
@@ -33,17 +33,6 @@ async function main() {
   writeLogs("Wallet balance", balance);
 
   if (balance < 0.01) throw new Error("Not enough ether");
-
-  writeLogs("Deploying MyToken", "");
-  const tokenFactory = new ethers.ContractFactory(
-    tokenJson.abi,
-    tokenJson.bytecode,
-    signer
-  );
-  const tokenContract = await tokenFactory.deploy();
-  writeLogs("Awaiting confirmations", {});
-  await tokenContract.deployed();
-  writeLogs("MyToken deployed at", tokenContract.address);
 
   writeLogs("Deploying Ballot contract", {});
   writeLogs("Proposals", PROPOSALS);
@@ -60,15 +49,20 @@ async function main() {
 
   const ballotContract = await ballotFactory.deploy(
     convertStringArrayToBytes32(PROPOSALS),
-    tokenContract.address
+    tokenAddress
   );
   writeLogs("Awaiting confirmations", {});
   await ballotContract.deployed();
   writeLogs("Contract deployed at", ballotContract.address);
+
   writeLogs("", "");
+  return ballotContract.address;
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+// call the script from console passing an arg to execute it
+if (process.argv.length >= 3) {
+  main(process.argv[2]).catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

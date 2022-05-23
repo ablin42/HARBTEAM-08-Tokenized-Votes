@@ -149,11 +149,6 @@ describe("Ballot", function () {
                 );
                 expect(spentVotes).to.eq(USED_VOTE_POWER);
               });
-
-              // it("should return 0 voting power", async () => {
-              //   const votingPower = await ballotContract.votingPower(accounts[index + 1].address);
-              //   expect(votingPower).to.eq(0);
-              // });
             } else {
               it("fails", async () => {
                 await expect(
